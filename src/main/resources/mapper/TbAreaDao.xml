@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.imooc.jay.dao.TbAreaDao">
+    <select id="queryAreaList" resultType="com.imooc.jay.entity.TbArea">
+        select id, name, priority, create_time, update_time
+        from tb_area
+        order by priority
+        desc
+    </select>
+
+    <select id="queryAreaById" resultType="com.imooc.jay.entity.TbArea">
+        select id, name, priority, create_time, update_time
+        from tb_area
+        where id = #{id}
+    </select>
+
+    <insert id="insertArea" useGeneratedKeys="true" keyProperty="id" keyColumn="id" parameterType="com.imooc.jay.entity.TbArea">
+        insert into
+        tb_area(name, priority)
+        values
+        (#{name}, #{priority})
+    </insert>
+
+    <insert id="insertAreaGetId" useGeneratedKeys="true" keyProperty="id" keyColumn="id" parameterType="com.imooc.jay.entity.TbArea">
+        insert into
+        tb_area(name, priority)
+        values
+        (#{name}, #{priority})
+
+        <selectKey keyProperty="id" resultType="java.lang.Integer" order="AFTER">
+            select last_insert_id()
+        </selectKey>
+    </insert>
+
+    <update id="updateArea" parameterType="com.imooc.jay.entity.TbArea">
+        update tb_area
+        <set>
+            <if test="name != null">name = #{name}</if>
+            <if test="priority != null">priority = #{priority}</if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteArea">
+        delete from tb_area where id = #{id}
+    </delete>
+</mapper>
