@@ -29,6 +29,7 @@ public class AreaController {
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     private Map<String, Object> getAreaList() {
+        logger.info("++++++++++++list request received.: {}.", 1234567890);
         List<TbArea> list = areaService.getAreaList();
 
         Map<String, Object> modelMap = new HashMap<>();
