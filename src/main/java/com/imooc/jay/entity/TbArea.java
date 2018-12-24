@@ -1,15 +1,19 @@
 package com.imooc.jay.entity;
 
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import java.util.Date;
 
+@ApiModel
 public class TbArea {
 
-    private Integer id;
-    private String name;
-    private Integer priority;
-    private Date createTime;
-    private Date updateTime;
+    @ApiModelProperty(value = "地区id", required = true) private Integer id;
+    @ApiModelProperty("地区名") private String name;
+    @ApiModelProperty("排序") private Integer priority;
+    @ApiModelProperty("创建时间") private Date createTime;
+    @ApiModelProperty("最后修改时间") private Date updateTime;
 
     public Integer getId() {
         return id;

@@ -1,8 +1,11 @@
 package com.imooc.jay.controller;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.concurrent.ArrayBlockingQueue;
@@ -11,8 +14,16 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 @RestController
+@RequestMapping(value = "/test")
+@Api(tags = "test测试")
 public class TestController {
     private static final Logger logger = LoggerFactory.getLogger(TestController.class);
+
+    @RequestMapping(value = "/index", method = RequestMethod.GET)
+    @ApiOperation("index首页查询")
+    public String index() {
+        return "test/index";
+    }
 
     @RequestMapping(value = "/testThreadPool")
     public void testThreadPool() {
