@@ -3,6 +3,7 @@ package com.imooc.jay.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.imooc.jay.entity.TbArea;
+import com.imooc.jay.handler.ResponseData;
 import com.imooc.jay.service.AreaService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -30,14 +31,11 @@ public class AreaController {
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ApiOperation("area列表查询")
-    private Map<String, Object> getAreaList() {
+    private ResponseData<List<TbArea>> getAreaList() {
         logger.info("++++++++++++list request received.: {}.", 1234567890);
         List<TbArea> list = areaService.getAreaList();
 
-        Map<String, Object> modelMap = new HashMap<>();
-        modelMap.put("areaList", list);
-
-        return modelMap;
+        return ResponseData.Builder.SUCC().initSuccData(list);
     }
 
     @RequestMapping(value = "/get_area", method = RequestMethod.GET)
