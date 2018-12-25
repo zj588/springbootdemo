@@ -1,13 +1,26 @@
 package com.imooc.jay.controller;
 
+import com.imooc.jay.entity.TbArea;
+import com.imooc.jay.handler.ResponseData;
+import com.imooc.jay.service.TestService;
+import com.imooc.jay.util.DateUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -19,11 +32,39 @@ import java.util.concurrent.TimeUnit;
 public class TestController {
     private static final Logger logger = LoggerFactory.getLogger(TestController.class);
 
+    @Autowired
+    private TestService testService;
+
     @RequestMapping(value = "/index", method = RequestMethod.GET)
     @ApiOperation("index首页查询")
-    public String index() {
-        return "test/index";
+    public ResponseData index() {
+        return ResponseData.Builder.SUCC().initSuccData("Hello World");
     }
+
+    @RequestMapping(value = "/export", method = RequestMethod.GET)
+    @ResponseBody
+    public void export(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        long start = System.currentTimeMillis();
+
+        ServletOutputStream out = response.getOutputStream();
+        try {
+            String filename = "test_export_" + DateUtil.transForDate((int) (System.currentTimeMillis() / 1000), "yyyyMMdd_HHmmss") + ".xls";
+            HSSFWorkbook workbook = testService.exportTest();
+            response.setContentType("application/vnd.ms-excel;charset=utf-8");
+//            response.setContentType("application/octet-stream;charset=utf-8");
+            response.setHeader("Content-Disposition", "attachment;filename=\"" + new String(filename.getBytes("gb2312"), "ISO8859-1"));
+            workbook.write(out);
+            out.close();
+        } catch (Exception e) {
+            logger.error("Export teacher response fail, error {}.", e);
+            ResponseData responseData =  ResponseData.Builder.FAIL().initErrCodeAndMsg(1, "Export error");
+            out.println("{\"code\": " + responseData.getCode() + ", \"message\": \"" + responseData.getMessage() + "\", \"data\": {}}");
+            out.close();
+        }finally {
+            logger.info("Export data finish. cost time: {}ms",System.currentTimeMillis() - start);
+        }
+    }
+
 
     @RequestMapping(value = "/testThreadPool")
     public void testThreadPool() {
