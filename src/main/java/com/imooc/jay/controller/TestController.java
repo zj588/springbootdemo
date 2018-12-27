@@ -1,5 +1,6 @@
 package com.imooc.jay.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.imooc.jay.entity.TbArea;
 import com.imooc.jay.handler.ResponseData;
 import com.imooc.jay.service.TestService;
@@ -10,6 +11,9 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -35,12 +39,43 @@ public class TestController {
     @Autowired
     private TestService testService;
 
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
+
+    @Autowired
+    private RedisTemplate redisTemplate;
+
     @RequestMapping(value = "/index", method = RequestMethod.GET)
     @ApiOperation("index首页查询")
     public ResponseData index() {
         return ResponseData.Builder.SUCC().initSuccData("Hello World");
     }
 
+    @RequestMapping(value = "/setRedis", method = RequestMethod.GET)
+    public ResponseData testRedis() {
+        List<Integer> list = new ArrayList<>();
+        list.add(1);
+        list.add(2);
+        list.add(3);
+
+        redisTemplate.opsForList().leftPushAll("test_list", list);
+        return ResponseData.Builder.SUCC();
+    }
+
+    @RequestMapping(value = "/getRedis", method = RequestMethod.GET)
+    public ResponseData getRedis() {
+        int i = (int)redisTemplate.opsForList().leftPop("test_list");
+        return ResponseData.Builder.SUCC().initSuccData(i);
+    }
+
+
+    /**
+     * excel导出
+     *
+     * @param request
+     * @param response
+     * @throws IOException
+     */
     @RequestMapping(value = "/export", method = RequestMethod.GET)
     @ResponseBody
     public void export(HttpServletRequest request, HttpServletResponse response) throws IOException {
