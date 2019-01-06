@@ -48,7 +48,7 @@ public class TestController {
     @RequestMapping(value = "/index", method = RequestMethod.GET)
     @ApiOperation("index首页查询")
     public ResponseData index() {
-        return ResponseData.Builder.SUCC().initSuccData("Hello World");
+        return ResponseData.Builder.SUCC().initSuccData("Hello World!");
     }
 
     @RequestMapping(value = "/setRedis", method = RequestMethod.GET)
