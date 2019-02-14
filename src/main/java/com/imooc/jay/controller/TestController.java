@@ -103,19 +103,34 @@ public class TestController {
 
     @RequestMapping(value = "/testThreadPool")
     public void testThreadPool() {
+        List<Integer> array = new ArrayList<>();
+        for (int i = 1; i <= 20; i++) {
+            array.add(i);
+        }
 //        // 我们使用了一个大小为5的ArrayBlockingQueue阻塞队列来保存等待执行的任务。接着我们提交了20个任务给线程池，由于每个线程执行任务的时候会睡眠0.1秒，因此当10个线程繁忙的时候，其他任务不会立即得到执行，我们提交的新任务会被保存在队列里。当等待任务的数量超过线程池阻塞队列的最大容量时，抛出了RejectedExecutionException异常。
 //        // 由于ArrayBlockingQueue内部只使用了一个锁来隔离读和写的操作，因此效率没有使用了两个锁来隔离读写操作的LinkedBlockingQueue高，故而不推荐使用这种方式
 //        ThreadPoolExecutor executor = new ThreadPoolExecutor(5, 10, 200, TimeUnit.MINUTES, new ArrayBlockingQueue<>(5));
 
 
         // 推荐使用LinkedBlockingQueue队列，效率高
-        ThreadPoolExecutor executor = new ThreadPoolExecutor(5, 10, 200, TimeUnit.MINUTES, new LinkedBlockingQueue<>());
+        ThreadPoolExecutor executor = new ThreadPoolExecutor(5, 10, 2, TimeUnit.MINUTES, new LinkedBlockingQueue<>());
 
-        for (int i = 1; i <= 20; i++) {
-            executor.execute(new TestThreadPool(i));
-            logger.info("线程池中线程数目："+executor.getPoolSize()+"，队列中等待执行的任务数目："+
-                    executor.getQueue().size()+"，已执行玩别的任务数目："+executor.getCompletedTaskCount());
+        int index = 0;
+        while (true) {
+            if (index >= array.size()) {
+                break;
+            }
+
+            if (executor.getPoolSize() >= 20) {
+                Integer value = array.get(index);
+                index++;
+
+                executor.execute(new TestThreadPool(value));
+                logger.info("线程池中线程数目："+executor.getPoolSize()+"，队列中等待执行的任务数目："+
+                        executor.getQueue().size()+"，已执行玩别的任务数目："+executor.getCompletedTaskCount());
+            }
         }
+
         executor.shutdown();
     }
 
