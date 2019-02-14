@@ -1,9 +1,11 @@
 package com.imooc.jay.dao;
 
 import com.imooc.jay.entity.TbArea;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public interface TbAreaDao {
     /**
      * 区域列表
