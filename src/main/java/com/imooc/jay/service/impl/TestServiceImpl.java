@@ -56,4 +56,9 @@ public class TestServiceImpl implements TestService {
         }
         return workbook;
     }
+
+    @Override
+    public void testSchedule() {
+        System.out.println(1);
+    }
 }

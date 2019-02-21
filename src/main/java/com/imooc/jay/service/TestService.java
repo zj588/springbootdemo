@@ -6,4 +6,6 @@ import java.io.IOException;
 
 public interface TestService {
     HSSFWorkbook exportTest() throws IOException;
+
+    void testSchedule();
 }

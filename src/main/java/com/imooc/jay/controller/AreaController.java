@@ -31,7 +31,7 @@ public class AreaController {
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ApiOperation("area列表查询")
-    private ResponseData<List<TbArea>> getAreaList() {
+    public ResponseData<List<TbArea>> getAreaList() {
         logger.info("++++++++++++list request received.: {}.", 1234567890);
         List<TbArea> list = areaService.getAreaList();
 
@@ -41,7 +41,7 @@ public class AreaController {
     @RequestMapping(value = "/get_area", method = RequestMethod.GET)
     @ApiOperation("通过ID查询")
     @ApiImplicitParam(name = "id", value = "地区id", dataType = "integer", required = true, paramType = "query")
-    private Map<String, Object> getAreaListById(int id) {
+    public Map<String, Object> getAreaListById(int id) {
         TbArea area = areaService.getAreaById(id);
 
         Map<String, Object> modelMap = new HashMap<>();
@@ -52,7 +52,7 @@ public class AreaController {
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     @ApiOperation("插入地区")
-    private Map<String, Object> addArea(@RequestBody TbArea area) {
+    public Map<String, Object> addArea(@RequestBody TbArea area) {
         Map<String, Object> modelMap = new HashMap<>();
         modelMap.put("success", areaService.insertArea(area));
 
