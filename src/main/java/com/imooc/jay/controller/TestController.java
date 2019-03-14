@@ -148,7 +148,7 @@ public class TestController {
             Thread currentThread = Thread.currentThread();
             logger.info(currentThread.getName()+" 正在执行task "+i);
             try {
-                currentThread.sleep(100);
+                Thread.sleep(100);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
