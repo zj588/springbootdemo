@@ -18,7 +18,11 @@ import javax.servlet.http.HttpServletRequest;
 public class BackLogAspect {
     private static final Logger logger = LoggerFactory.getLogger(BackLogAspect.class);
 
-    @Pointcut("execution(* com.imooc.jay.controller..*.*(..))")
+    // com.imooc.jay.controller下所有类都打印参数
+    //@Pointcut("execution(* com.imooc.jay.controller..*.*(..))")
+
+    // 通过添加注解@BackLogParamsAnnotation打印参数
+    @Pointcut("@annotation(com.imooc.jay.anotations.BackLogParamsAnnotation)")
     public void backLog(){}
 
     @Before("backLog()")

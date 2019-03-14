@@ -1,5 +1,6 @@
 package com.imooc.jay.service.impl;
 
+import com.imooc.jay.anotations.BackLogParamsAnnotation;
 import com.imooc.jay.dao.TbAreaDao;
 import com.imooc.jay.entity.TbArea;
 import com.imooc.jay.service.AreaService;
@@ -34,6 +35,7 @@ public class AreaServiceImpl implements AreaService {
 
     @Override
     @Transactional
+    @BackLogParamsAnnotation
     public boolean insertArea(TbArea area) {
         if (area.getName() == null || "".equals(area.getName())) {
             throw new RuntimeException("区域信息不能为空！");

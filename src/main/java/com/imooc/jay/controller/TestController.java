@@ -1,6 +1,7 @@
 package com.imooc.jay.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.imooc.jay.anotations.BackLogParamsAnnotation;
 import com.imooc.jay.entity.TbArea;
 import com.imooc.jay.handler.ResponseData;
 import com.imooc.jay.service.TestService;
@@ -47,6 +48,7 @@ public class TestController {
 
     @RequestMapping(value = "/index", method = RequestMethod.GET)
     @ApiOperation("index首页查询")
+    @BackLogParamsAnnotation
     public ResponseData index() {
         return ResponseData.Builder.SUCC().initSuccData("Hello World!");
     }
