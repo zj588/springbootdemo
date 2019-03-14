@@ -1,6 +1,7 @@
 package com.imooc.jay.aspect;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -37,6 +38,35 @@ public class BackLogAspect {
         logger.info("IP : " + request.getRemoteAddr());
         logger.info("CLASS_METHOD : " + joinPoint.getSignature().getDeclaringTypeName() + "." + joinPoint.getSignature().getName());
         logger.info("ARGS : " + JSON.toJSONString(joinPoint.getArgs()));
+
+
+
+//        try {
+//            HttpServletRequest request =
+//                    ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
+//                            .getRequest();
+//            String requestUrl = request.getServerName() + ":" + request.getServerPort()
+//                    + request.getRequestURI();
+//            String method = request.getMethod();
+//            String queryString = request.getQueryString();
+//            // 参数
+//            Object[] args = joinPoint.getArgs();
+//            String params = null;
+//            if (null != args && args.length > 0) {
+//                if ("POST".equals(method)) {
+//                    Object object = args[0];
+//                    params = JSONObject.toJSONString(object);
+//                } else if ("GET".equals(method)) {
+//                    params = queryString;
+//                }
+//                logger.info(" **** PrintParams requestMethod:{} ,requestUrl:{},  param:{}", method,
+//                        requestUrl, params);
+//            } else {
+//                logger.warn(" **** PrintParams   not  data ! ");
+//            }
+//        } catch (Exception e) {
+//            logger.error("PrintParamsAspect  error:{}", e);
+//        }
 
     }
 }
