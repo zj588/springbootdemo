@@ -48,50 +48,81 @@
         <!--<appender-ref ref="syslog" />-->
     </root>
     <!-- 指定项目中某个包，当有日志操作行为时的日志记录级别 -->
-    <!-- com.appley为根包，也就是只要是发生在这个根包下面的所有日志操作行为的权限都是DEBUG -->
+    <!-- com.imooc.jay为根包，也就是只要是发生在这个根包下面的所有日志操作行为的权限都是DEBUG -->
     <!-- 级别依次为【从高到低】：FATAL > ERROR > WARN > INFO > DEBUG > TRACE  -->
     <logger name="com.imooc.jay" level="DEBUG">
         <appender-ref ref="syslog" />
     </logger>
 </configuration>
 
+
 <!--<configuration scan="true" scanPeriod="10 seconds">-->
-
-<!--<appender name="consoleAppender" class="ch.qos.logback.core.ConsoleAppender">-->
-    <!--<encoder charset="UTF-8">-->
-        <!--<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %logger{0} - %msg %n-->
+<!--<contextName>teachermgt-iapi-log</contextName>-->
+<!--<property name="USER_HOME" value="/data0/logs/teachermgt-iapi"/>-->
+<!--<appender name="console" class="ch.qos.logback.core.ConsoleAppender">-->
+    <!--<encoder>-->
+        <!--<pattern>-->
+            <!--%d{HH:mm:ss.SSS} %-5level[%thread]%logger{32}:%line-[%X{requestId}] > %msg%n-->
         <!--</pattern>-->
     <!--</encoder>-->
 <!--</appender>-->
 
-<!--<appender name="fileAppender"-->
-          <!--class="ch.qos.logback.core.rolling.RollingFileAppender">-->
-    <!--<file>/data0/logs/teachersalary-iservice/iservice.log</file>-->
-    <!--<rollingPolicy-->
-            <!--class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">-->
-        <!--<fileNamePattern>/data0/logs/teachersalary-iservice/iservice.log.%d{yyyyMMdd}-->
-        <!--</fileNamePattern>-->
+<!--<appender name="infoFile" class="ch.qos.logback.core.rolling.RollingFileAppender">-->
+    <!--<file>${USER_HOME}/iapi.log</file>-->
+    <!--<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">-->
+        <!--<FileNamePattern>${USER_HOME}/iapi.%d{yyyy-MM-dd}.log</FileNamePattern>-->
     <!--</rollingPolicy>-->
-    <!--<encoder charset="UTF-8">-->
-        <!--<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%logger{0}] - %msg %n-->
-        <!--</pattern>-->
+    <!--<filter class="ch.qos.logback.classic.filter.ThresholdFilter">-->
+        <!--<level>DEBUG</level>-->
+    <!--</filter>-->
+    <!--<encoder>-->
+        <!--<Pattern>%d{HH:mm:ss.SSS} %-5level [%thread] %logger{32}:%line-[%X{requestId}] > %msg%n</Pattern>-->
+        <!--<charset>UTF-8</charset>-->
+    <!--</encoder>-->
+<!--</appender>-->
+<!--<appender name="errorFile" class="ch.qos.logback.core.rolling.RollingFileAppender">-->
+    <!--<file>${USER_HOME}/errorFile.log</file>-->
+    <!--<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">-->
+        <!--<FileNamePattern>${USER_HOME}/errorFile.%d{yyyy-MM-dd}.log</FileNamePattern>-->
+    <!--</rollingPolicy>-->
+    <!--<filter class="ch.qos.logback.classic.filter.ThresholdFilter">-->
+        <!--<level>ERROR</level>-->
+    <!--</filter>-->
+    <!--<encoder>-->
+        <!--<Pattern>%d{HH:mm:ss.SSS} %-5level [%thread] %logger{32}:%line-[%X{requestId}] > %msg%n</Pattern>-->
+        <!--<charset>UTF-8</charset>-->
     <!--</encoder>-->
 <!--</appender>-->
 
-<!--<logger name="org.springframework" level="ERROR"></logger>-->
 
-<!--<springProfile name="dev">-->
-    <!--<root level="INFO">-->
-        <!--<appender-ref ref="consoleAppender"/>-->
-        <!--<appender-ref ref="fileAppender" />-->
-    <!--</root>-->
-<!--</springProfile>-->
-<!--<springProfile name="test,staging,production">-->
-    <!--<root level="INFO">-->
-        <!--<appender-ref ref="fileAppender" />-->
-        <!--<appender-ref ref="consoleAppender"/>-->
-    <!--</root>-->
-<!--</springProfile>-->
+<!--<appender name="sqlFile" class="ch.qos.logback.core.rolling.RollingFileAppender">-->
+    <!--<file>${USER_HOME}/sqlFile.log</file>-->
+    <!--<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">-->
+        <!--<FileNamePattern>${USER_HOME}/sqlFile.%d{yyyy-MM-dd}.log</FileNamePattern>-->
+    <!--</rollingPolicy>-->
+    <!--<encoder>-->
+        <!--<Pattern>%d{HH:mm:ss.SSS} %-5level [%thread] %logger{32}:%line-[%X{requestId}] > %msg%n</Pattern>-->
+        <!--<charset>UTF-8</charset>-->
+    <!--</encoder>-->
+<!--</appender>-->
 
 
+<!--<root level="INFO">-->
+    <!--<appender-ref ref="infoFile"/>-->
+    <!--<appender-ref ref="errorFile"/>-->
+    <!--<appender-ref ref="console"/>-->
+<!--</root>-->
+
+<!--<logger name="com.dadaabc.tms.dao" level="ERROR" additivity="false">-->
+    <!--<appender-ref ref="console"/>-->
+    <!--<appender-ref ref="sqlFile"/>-->
+<!--</logger>-->
+<!--<logger name="com.dadaabc.tms.db.dadatms.dao.mapper" level="ERROR" additivity="false">-->
+    <!--<appender-ref ref="console"/>-->
+    <!--<appender-ref ref="sqlFile"/>-->
+<!--</logger>-->
+<!--&lt;!&ndash; 关闭kafka监听日志实时输出 &ndash;&gt;-->
+<!--<logger name="org.apache.kafka" level="OFF" />-->
+<!--<logger name="org.springframework.kafka.listener.KafkaMessageListenerContainer"-->
+        <!--level="ERROR" />-->
 <!--</configuration>-->
