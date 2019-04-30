@@ -1,6 +1,7 @@
 package com.imooc.jay.dao;
 
 import com.imooc.jay.entity.TbArea;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -53,6 +54,13 @@ public interface TbAreaDao {
      * @return
      */
     int deleteArea(int id);
+
+    /**
+     * 查
+     * @param name
+     * @return
+     */
+    List<TbArea> queryByName(@Param("name") String name);
 
 
 }

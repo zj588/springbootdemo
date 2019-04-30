@@ -44,4 +44,10 @@
     <delete id="deleteArea">
         delete from tb_area where id = #{id}
     </delete>
+
+    <select id="queryByName" resultType="com.imooc.jay.entity.TbArea" parameterType="java.util.HashMap">
+        select *
+        from tb_area
+        where `name` = #{name, jdbcType=VARCHAR}
+    </select>
 </mapper>

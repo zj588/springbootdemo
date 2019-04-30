@@ -94,6 +94,19 @@ public class AreaServiceImpl implements AreaService {
         }
     }
 
+    public boolean insertAreaByName(String name) {
+
+        List<TbArea> areaList = tbAreaDao.queryByName(name);
+
+        if (areaList != null && areaList.size() == 0) {
+            TbArea area = new TbArea();
+            area.setName(name);
+            tbAreaDao.insertArea(area);
+        }
+
+        return true;
+    }
+
 //    @Override
 //    @KafkaListener(topics = {TOPIC_TEST})
 //    public void kafkaArea(ConsumerRecord<String, String> record) {
